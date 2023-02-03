@@ -7,21 +7,28 @@
      * @brief configuration par défaut d'une application
     */
     #define APPLICATION_DEFAULT_CONFIG {\
-        .windowConfig = {300,400,{255, 255, 255} },\
+        .window = WINDOW_DEFAULT_CONFIG,\
     }
 
     /**
      * @struct App
      * @brief représente les données permettant la gestion d'une application
-     * @memberof WindowConfig
+     * @param Window
     */
     typedef struct{
-        WindowConfig windowConfig;
+        Window window;
     }App;
 
     /**
      * @brief affiche la configuration d'une application
-     * @param application
+     * @param application adresse de la structure de l'application
     */
     void printApplicationConfig(App* application);
+
+    /**
+     * @brief crée une structure représentant l'application
+     * @attention to call staticly not for dynamic allocation
+     * @param applicationWindow
+    */
+    App newApplication(Window applicationWindow);
 #endif

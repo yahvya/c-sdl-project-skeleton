@@ -4,4 +4,4 @@ cd build
 
 [ $# -eq 1 ] && cmake ..
 
-make && ./app
+make && clear && valgrind ./app

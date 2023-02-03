@@ -6,6 +6,8 @@ add_executable(app src/app.c)
 
 target_link_libraries(app 
     SDL_HELPER_CONFIG
+    SDL_HELPER_WINDOW_MANAGER
+    SDL_HELPER_APPLICATION_MANAGER
     ${SDL2_INCLUDE_DIRS}
     ${SDL2TTF_INCLUDE_DIRS}
     ${SDL2_LIBRARIES} 
