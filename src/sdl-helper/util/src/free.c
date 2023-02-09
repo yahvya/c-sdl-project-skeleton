@@ -29,6 +29,8 @@ void freeList(struct ToFree* toFree,void (*freeCallable)(void*) ){
     }
 }
 
-void freeSDLImage(void* imageData){
-    SDL_FreeSurface((SDL_Surface*) imageData);
+void freeSDLImage(void* imageComponent){
+    Component* component = (Component*) imageComponent;
+
+    SDL_FreeSurface((SDL_Surface*) component->component);
 }

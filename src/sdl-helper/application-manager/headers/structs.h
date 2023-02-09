@@ -8,10 +8,12 @@
      * @struct CallableList
      * @param toCallOnClose fonction à appeller à la fermeture de la fenêtre, doit renvoyer si la fenêtre peut être fermé reçois App*
      * @param manageEvent fonction à appeller pour la gestion d'un évenement reçois SDl_Event*
+     * @param placeComponents fonction à appeller pour placer les composants reçois App*
     */
     typedef struct{
         bool (*toCallOnClose)(void*);
         void (*manageEvent)(void*);
+        void (*placeComponents)(void*);
     }CallableList;
 
     /**
@@ -27,6 +29,6 @@
         CallableList actionsList;
         ComponentDescriptor componentsDescriptor;
         bool exit;
-        ToFree *components[COMPONENT_MAX];
+        ToFree *components[SDLH_COMPONENT_MAX];
     }App;
 #endif

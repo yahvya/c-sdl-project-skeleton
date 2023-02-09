@@ -5,34 +5,49 @@
 
 #include <stdio.h>
 
+typedef enum{HEIMDALL_IMAGE}MyComponentsIds;
+
 /**
- * exemple application
+ * application d'exemple
 */
 int main(int argc,char* argv[]){
-    if(!initSDL(SDLH_DEFAULT,SDLH_DEFAULT) ) return 1;
-
-    App application;
     
+    App application;
+
+    // initialisation de la sdl
+    if(!initSDL(SDLH_DEFAULT,SDLH_DEFAULT) ) return 1;
+    
+    // création de l'application
     newApplication(
         &application,
-        newWindow("Example application",900,400,true,30,30,30,SDLH_DEFAULT),
-        newCallableList(NULL,NULL)
+        newWindow("Example application",900,400,true,255,255,255,SDLH_DEFAULT),
+        newCallableList(NULL,NULL,NULL)
     );
 
-    if(!initApplication(&application) ) return 1;
+    // initialisation
+    if(!initApplication(&application) ){
+        quitSDL();
 
-    application.componentsDescriptor.type = IMAGE;
-    application.componentsDescriptor.componentData.path = "../resources/heimdall.jpg";
-    application.componentsDescriptor.componentTmpRect.x = 0;
-    application.componentsDescriptor.componentTmpRect.y = 0;
-    application.componentsDescriptor.componentTmpRect.w = 200;
-    application.componentsDescriptor.componentTmpRect.h = 200;
+        return 1;
+    }
 
-    addComponentToApplication(&application,loadComponent(&application,SDLH_COMPONENTD_NONE) );
+    // création de la description du premier composant
+    putComponentDescriptorIn(&application.componentsDescriptor,SDLH_COMPONENT_IMAGE("../resources/baby-groot.png",0,0,900,400,HEIMDALL_IMAGE,true) );
 
+    // création des composants
+    Component* components[] = {
+        // loadLastComponent(&application,SDLH_COMPONENT_IMAGE("../resources/heimdall.jpg",200,200,200,100,HEIMDALL_IMAGE,false) ),
+        loadLastComponent(&application,SDLH_COMPONENTD_NONE)
+    };
+
+    // ajout du premier composant avec un descripteur qui ne sera pas changé
+    addComponentToApplication(&application,components);
+    // lancement de l'application
     runApplication(&application);
+    // fin et libération des ressources de l'application
     endApplication(&application);
 
+    // libération des ressources de la sdl
     quitSDL();
 
     return 0;

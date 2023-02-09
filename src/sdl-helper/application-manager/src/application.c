@@ -4,7 +4,6 @@
 #include "../../config/headers/config.h"
 #include "../headers/application.h"
 
-#include <stdarg.h>
 #include <string.h>
 
 bool initSDL(Uint32 sdlFlags,Uint32 sdlImageFlags){
@@ -34,8 +33,10 @@ App* newApplication(App* application,Window applicationWindow,CallableList appli
     application->window = applicationWindow;
     application->actionsList = applicationActionList;
     application->exit = false;
-    application->components[IMAGE] = NULL;
+    application->components[SDLH_IMAGE] = NULL;
     application->componentsDescriptor.countOfComponentToLoad = 0;
+    application->componentsDescriptor.type = SDLH_NONE;
+    application->componentsDescriptor.componentId = SDLH_NOID;
 
     return application;
 }
@@ -44,10 +45,11 @@ App* cloneApplication(App* toClone,App* newApp){
     return (App*) memcpy(newApp,toClone,sizeof(App) );   
 }
 
-CallableList newCallableList(bool (*toCallOnClose)(void*),void (*manageEvent)(void*) ){
+CallableList newCallableList(bool (*toCallOnClose)(void*),void (*manageEvent)(void*),void (*placeComponents)(void*) ){
     return (CallableList) {
         .toCallOnClose = toCallOnClose,
-        .manageEvent = manageEvent
+        .manageEvent = manageEvent,
+        .placeComponents = placeComponents
     };
 }
 
@@ -62,22 +64,15 @@ bool runApplication(App* application){
 }
 
 void endApplication(App* application){
-    freeList(application->components[IMAGE],freeSDLImage);
+    freeList(application->components[SDLH_IMAGE],freeSDLImage);
 }
 
-void addComponentToApplication(App* application,...){
-    va_list argsList;
-
-    va_start(argsList,application);
-
-    // ajout des composants
+void addComponentToApplication(App* application,Component** components){
     for(;application->componentsDescriptor.countOfComponentToLoad > 0; application->componentsDescriptor.countOfComponentToLoad--){
-        Component* component = va_arg(argsList,Component*);
+        Component* component = components[application->componentsDescriptor.countOfComponentToLoad - 1];
 
-        if(component == NULL || component->type == NONE || component->type == COMPONENT_MAX) continue;
+        if(component == NULL || component->type == SDLH_NONE || component->type == SDLH_COMPONENT_MAX) continue;
 
         application->components[component->type] = addElementToFree(application->components[component->type],component);
     }
-
-    va_end(argsList);
 }

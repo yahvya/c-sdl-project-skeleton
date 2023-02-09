@@ -1,4 +1,5 @@
 #include "../headers/window.h"
+#include "../headers/window-component-manager.h"
 #include "../../config/headers/config.h"
 #include "../../application-manager/headers/application.h"
 
@@ -60,7 +61,7 @@ bool initApplicationWindow(App* application){
     if(window == NULL) return false;
 
     // création du renderer
-    SDL_Renderer* renderer = SDL_CreateRenderer(window,0,0);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window,0,SDL_RENDERER_ACCELERATED);
 
     if(renderer == NULL){
         SDL_DestroyWindow(window);
@@ -95,8 +96,14 @@ void manageWindow(App* application){
             255
         );
 
-        SDL_RenderPresent(renderer);
+        // affichage des composants de l'application
+        if(application->actionsList.placeComponents == NULL)
+            placeComponents(application);
+        else
+            application->actionsList.placeComponents(application);
 
+        SDL_RenderPresent(renderer);
+        
         SDL_WaitEvent(&eventManager);
 
         // gestion des évenements et appel de fonctions correspondantes

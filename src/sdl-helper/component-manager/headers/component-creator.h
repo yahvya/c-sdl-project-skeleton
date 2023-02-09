@@ -4,7 +4,9 @@
 
     /**
      * @brief charge une image
-     * @return la structure représentant l'image ou NULL
+     * @param renderer le renderer de la fenêtre
+     * @param imgPath le chemin de l'image
+     * @return SDL_Texture
     */
-    SDL_Surface* loadImage(char* imgPath);
+    SDL_Texture* loadImage(SDL_Renderer* renderer,char* imgPath);
 #endif

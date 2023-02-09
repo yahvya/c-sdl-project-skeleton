@@ -2,7 +2,8 @@
 #define SDLH_WMG_STRUCTS
 
     #include <SDL2/SDL.h>
-
+    #include <stdbool.h>
+    
     /**
      * @brief nombre de caractères maximum dans le nom d'une fenêtre
     */
@@ -17,7 +18,16 @@
     /**
      * @brief configuration par défaut d'une fenêtre
     */
-    #define WINDOW_DEFAULT_CONFIG {"Default window title",300,400,{255, 255, 255},true,true,SDLH_WINDOW_DEFAULT_FLAGS,NULL,NULL}
+    #define SDLH_WINDOW_DEFAULT_CONFIG {\
+            .windowName = "Default window title",\
+            .windowWidth = 300,\
+            .windowHeight = 400,\
+            .windowBackgroundColor = {255, 255, 255},\
+            .isResizable = true,\
+            .centered = true,\
+            .flags = SDLH_WINDOW_DEFAULT_FLAGS,\
+            .window = NULL\
+        }
 
     /**
      * @struct WindowConfig

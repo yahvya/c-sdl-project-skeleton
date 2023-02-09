@@ -23,10 +23,10 @@
      * @attention components are not init to NULL
     */
     #define APPLICATION_DEFAULT_CONFIG {\
-        .window = WINDOW_DEFAULT_CONFIG,\
+        .window = SDLH_WINDOW_DEFAULT_CONFIG,\
         .actionsList = NULL,\
         .exit = false,\
-        .componentsDescriptor = {.countOfComponentToLoad = 0}\
+        .componentsDescriptor = {.countOfComponentToLoad = 0,.type = NONE}\
     }
 
     /**
@@ -59,11 +59,12 @@
      * @details les fonctions peuvent être NULL
      * @details toCallOnClose recevra l'application
      * @attention à appeller statiquement dans le programme
-     * @param toCallOnClose
-     * @param manageEvent
+     * @param toCallOnClose fonction à appeller à la fermeture de la fenêtre
+     * @param manageEvent fonction pour gérer les évenements non traités à l'interne du helper
+     * @param placeComponents fonction pour placer les composants, remplace la fonction par défaut du helper
      * @return la structure
     */
-    CallableList newCallableList(bool (*toCallOnClose)(void*),void (*manageEvent)(void*) );
+    CallableList newCallableList(bool (*toCallOnClose)(void*),void (*manageEvent)(void*),void (*placeComponents)(void*) );
 
     /**
      * @brief initialise la sdl et retourne si l'initialisation à réussi
@@ -102,7 +103,7 @@
      * @brief ajoute un composant à l'application
      * @attention to count the number of arguments, the internal counter of the application component descriptor is used
      * @param application l'application
-     * @param multiple_params les composant à ajouter
+     * @param components tableau d'adresses de composants à ajouter
     */
-    void addComponentToApplication(App* application,...);
+    void addComponentToApplication(App* application,Component** components);
 #endif

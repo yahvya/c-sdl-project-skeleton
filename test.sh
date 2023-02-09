@@ -1,9 +1,5 @@
 #!/bin/bash
 
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
+cd src
 
-cd build
-
-[ $# -eq 1 ] && rm -r * && cmake ..
-
-make && clear && valgrind ./app
+gcc -Wall -O0 $(find . -name "*.c") -lSDL2 -lSDL2_image -o prog  && ./prog && rm prog
